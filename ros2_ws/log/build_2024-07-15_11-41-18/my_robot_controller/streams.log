@@ -1,0 +1,32 @@
+[1.364s] Invoking command in '/home/glory/ros2_ws/src/my_robot_controller': PYTHONPATH=/home/glory/ros2_ws/build/my_robot_controller/prefix_override:/home/glory/.local/lib/python3.10/site-packages/colcon_core/task/python/colcon_distutils_commands:/home/glory/ros2_ws/install/my_robot_controller/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated setup.py egg_info --egg-base ../../build/my_robot_controller build --build-base /home/glory/ros2_ws/build/my_robot_controller/build install --record /home/glory/ros2_ws/build/my_robot_controller/install.log --single-version-externally-managed install_data
+[1.779s] running egg_info
+[1.779s] creating ../../build/my_robot_controller/my_robot_controller.egg-info
+[1.808s] writing ../../build/my_robot_controller/my_robot_controller.egg-info/PKG-INFO
+[1.809s] writing dependency_links to ../../build/my_robot_controller/my_robot_controller.egg-info/dependency_links.txt
+[1.809s] writing requirements to ../../build/my_robot_controller/my_robot_controller.egg-info/requires.txt
+[1.809s] writing top-level names to ../../build/my_robot_controller/my_robot_controller.egg-info/top_level.txt
+[1.989s] writing manifest file '../../build/my_robot_controller/my_robot_controller.egg-info/SOURCES.txt'
+[2.046s] reading manifest file '../../build/my_robot_controller/my_robot_controller.egg-info/SOURCES.txt'
+[2.048s] writing manifest file '../../build/my_robot_controller/my_robot_controller.egg-info/SOURCES.txt'
+[2.048s] running build
+[2.048s] running build_py
+[2.049s] creating /home/glory/ros2_ws/build/my_robot_controller/build
+[2.049s] creating /home/glory/ros2_ws/build/my_robot_controller/build/lib
+[2.049s] creating /home/glory/ros2_ws/build/my_robot_controller/build/lib/my_robot_controller
+[2.049s] copying my_robot_controller/__init__.py -> /home/glory/ros2_ws/build/my_robot_controller/build/lib/my_robot_controller
+[2.050s] running install
+[2.056s] running install_lib
+[2.085s] creating /home/glory/ros2_ws/install/my_robot_controller/lib/python3.10/site-packages/my_robot_controller
+[2.086s] copying /home/glory/ros2_ws/build/my_robot_controller/build/lib/my_robot_controller/__init__.py -> /home/glory/ros2_ws/install/my_robot_controller/lib/python3.10/site-packages/my_robot_controller
+[2.087s] byte-compiling /home/glory/ros2_ws/install/my_robot_controller/lib/python3.10/site-packages/my_robot_controller/__init__.py to __init__.cpython-310.pyc
+[2.087s] running install_data
+[2.087s] creating /home/glory/ros2_ws/install/my_robot_controller/share/ament_index
+[2.088s] creating /home/glory/ros2_ws/install/my_robot_controller/share/ament_index/resource_index
+[2.088s] creating /home/glory/ros2_ws/install/my_robot_controller/share/ament_index/resource_index/packages
+[2.088s] copying resource/my_robot_controller -> /home/glory/ros2_ws/install/my_robot_controller/share/ament_index/resource_index/packages
+[2.088s] copying package.xml -> /home/glory/ros2_ws/install/my_robot_controller/share/my_robot_controller
+[2.088s] running install_egg_info
+[2.118s] Copying ../../build/my_robot_controller/my_robot_controller.egg-info to /home/glory/ros2_ws/install/my_robot_controller/lib/python3.10/site-packages/my_robot_controller-0.0.0-py3.10.egg-info
+[2.119s] running install_scripts
+[2.187s] writing list of installed files to '/home/glory/ros2_ws/build/my_robot_controller/install.log'
+[2.241s] Invoked command in '/home/glory/ros2_ws/src/my_robot_controller' returned '0': PYTHONPATH=/home/glory/ros2_ws/build/my_robot_controller/prefix_override:/home/glory/.local/lib/python3.10/site-packages/colcon_core/task/python/colcon_distutils_commands:/home/glory/ros2_ws/install/my_robot_controller/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated setup.py egg_info --egg-base ../../build/my_robot_controller build --build-base /home/glory/ros2_ws/build/my_robot_controller/build install --record /home/glory/ros2_ws/build/my_robot_controller/install.log --single-version-externally-managed install_data

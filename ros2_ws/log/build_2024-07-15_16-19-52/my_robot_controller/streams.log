@@ -1,0 +1,31 @@
+[1.336s] Invoking command in '/home/glory/ros2_ws/build/my_robot_controller': PYTHONPATH=/home/glory/ros2_ws/build/my_robot_controller/prefix_override:/home/glory/.local/lib/python3.10/site-packages/colcon_core/task/python/colcon_distutils_commands:/home/glory/ros2_ws/install/my_robot_controller/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated setup.py develop --editable --build-directory /home/glory/ros2_ws/build/my_robot_controller/build --no-deps symlink_data
+[1.851s] running develop
+[1.851s] /home/glory/.local/lib/python3.10/site-packages/setuptools/command/develop.py:42: EasyInstallDeprecationWarning: easy_install command is deprecated.
+[1.851s] !!
+[1.851s] 
+[1.851s]         ********************************************************************************
+[1.851s]         Please avoid running ``setup.py`` and ``easy_install``.
+[1.851s]         Instead, use pypa/build, pypa/installer or other
+[1.851s]         standards-based tools.
+[1.851s] 
+[1.851s]         See https://github.com/pypa/setuptools/issues/917 for details.
+[1.851s]         ********************************************************************************
+[1.852s] 
+[1.852s] !!
+[1.852s]   easy_install.initialize_options(self)
+[2.215s] running egg_info
+[2.240s] writing my_robot_controller.egg-info/PKG-INFO
+[2.241s] writing dependency_links to my_robot_controller.egg-info/dependency_links.txt
+[2.241s] writing entry points to my_robot_controller.egg-info/entry_points.txt
+[2.242s] writing requirements to my_robot_controller.egg-info/requires.txt
+[2.242s] writing top-level names to my_robot_controller.egg-info/top_level.txt
+[2.297s] reading manifest file 'my_robot_controller.egg-info/SOURCES.txt'
+[2.299s] writing manifest file 'my_robot_controller.egg-info/SOURCES.txt'
+[2.344s] running build_ext
+[2.344s] Creating /home/glory/ros2_ws/install/my_robot_controller/lib/python3.10/site-packages/my-robot-controller.egg-link (link to .)
+[2.345s] Installing draw_circle script to /home/glory/ros2_ws/install/my_robot_controller/lib/my_robot_controller
+[2.345s] Installing test_node script to /home/glory/ros2_ws/install/my_robot_controller/lib/my_robot_controller
+[2.346s] 
+[2.346s] Installed /home/glory/ros2_ws/build/my_robot_controller
+[2.346s] running symlink_data
+[2.407s] Invoked command in '/home/glory/ros2_ws/build/my_robot_controller' returned '0': PYTHONPATH=/home/glory/ros2_ws/build/my_robot_controller/prefix_override:/home/glory/.local/lib/python3.10/site-packages/colcon_core/task/python/colcon_distutils_commands:/home/glory/ros2_ws/install/my_robot_controller/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated setup.py develop --editable --build-directory /home/glory/ros2_ws/build/my_robot_controller/build --no-deps symlink_data
