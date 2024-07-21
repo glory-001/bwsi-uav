@@ -1,75 +1,93 @@
 import cv2
 import numpy as np
 import glob
+import matplotlib.pyplot as plt
 
-'''Load Calibration Parameters:
-    Function load_calibration(calibration_file):
-        Load calibration data from the file
-        Extract camera matrix and distortion coefficients
-        Return camera matrix and distortion coefficients'''
+#PLEASE NOTE: this code works up to the calculating homography because I worked on it for many hours and couldn't figure out how it worked 
+#also, it is currently formatted to only stitch two images together so testing would be easier 
 
 def load_calibration(calibration_file):
     data = (np.load(calibration_file))
     mtx = data["arr_0"] 
-    dist = data["arr_1"] #not sure if this is correct
-
-load_calibration("calibration_results.npz")
-
-'''
-Undistort Image:
-    Function undistort_image(image, camera_matrix, dist_coeffs):
-        Get image dimensions (height, width)
-        Compute new camera matrix for undistortion
-        Undistort the image (use cv2 undistort)
-        Crop the undistorted image using ROI
-        Return undistorted image'''
+    dist = data["arr_1"]
+    return mtx, dist
 
 def undistort_image(img, mtx, dist):
-    w = img.shape[0]
-    h = img.shape[1]
+    w = img.shape[1]
+    h = img.shape[0] #I SWITCHED THE W AND H AND MESSED EVERYTHING UP AND IVE BEEN CONFUSED FOR TWO HOURS IM--
 
     newcameramtx, roi = cv2.getOptimalNewCameraMatrix(mtx, dist, (w,h), 1, (w,h))
     dst = cv2.undistort(img, mtx, dist, None, newcameramtx)
-    print(dst)
 
-#load image and put through undistort_image
+    x, y, w, h = roi #322, 1328, 2343, 1308 from (4032, 3024, 3)
+    dst = dst[y:y+h, x:x+w] 
+    return dst #undistored image 
 
-'''
-Harris Corner Detection:
-    Function harris_corner_detection(image):
-        Convert the image to grayscale
-        Apply Harris corner detection
-        Dilate corners
-        Mark corners on the image
-        Return image with marked corners and detected corners
+def harris_corner_detection(image):
+    grey = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY) 
+    grey = np.float32(grey)
+    kernel = np.ones((5, 5), np.uint8) #added this in to dilate detected corners more 
 
-Match Features Between Images:
-    Function match_features(image1, image2):
-        Detect keypoints and descriptors in image1 using SIFT
-        Detect keypoints and descriptors in image2 using SIFT
-        Match descriptors using brute-force matcher
-        Extract matched points from both images
-        Return matched points from image1 and image2
+    dst = cv2.cornerHarris(grey,2,3,0.04) # parameters taken from opencv documentation
+    dst = cv2.dilate(dst, kernel)
 
-Create Mosaic:
-    Function create_mosaic(images, camera_matrix, dist_coeffs):
-        Undistort all images using undistort_image function
-        Initialize mosaic with the first undistorted image
-        For each subsequent undistorted image:
-            Detect Harris corners in both mosaic and current image using harris_corner_detection
-            Match features between mosaic and current image using match_features
-            Estimate homography using matched points
-            Warp mosaic image using the estimated homography
-            Blend current image into mosaic
-        Return final mosaic image
+    image[dst>0.01*dst.max()]=[0,0,255]
+    return image, dst #returns marked image, array of (dilated) corners
 
-Main:
-    Load camera matrix and distortion coefficients from calibration file
-    Load images from specified directory
-    Create mosaic using create_mosaic function
-    Save the mosaic image to a file
+def match_features(img1, img2):
+    sift = cv2.SIFT_create()
+    kp1, des1 = sift.detectAndCompute(img1,None)
+    kp2, des2 = sift.detectAndCompute(img2,None)
+    
+    bf = cv2.BFMatcher()
+    matches = bf.knnMatch(des1,des2,k=2)
+    good = []
+    for m,n in matches:
+        if m.distance < 0.25*n.distance:
+            good.append(m) #cuts 49173 matches down to 328, takes 120 seconds
 
-# Display the mosaic image
-cv2.imshow('Mosaic', mosaic_image)
-cv2.waitKey(0)
-cv2.destroyAllWindows()'''
+    #img3 = cv2.drawMatchesKnn(img1,kp1,img2,kp2,good,None,flags=cv2.DrawMatchesFlags_NOT_DRAW_SINGLE_POINTS)
+    return good, kp1, des1, kp2, des2 #returns list of (good) matches, kps and des
+
+def create_mosaic(images, camera_matrix, dist_coeffs):
+    undist = []
+    for img in images:
+        undist.append(undistort_image(img, camera_matrix, dist_coeffs))
+    #return undist // undistort_image working properly
+
+    harris = []
+    for img1 in undist:
+        marked_img, corners = harris_corner_detection(img1)
+        harris.append(marked_img)
+    #return harris // harris_corner_detection working properly mostly, some parameters may be off but it is marking points
+
+    good, kp1, des1, kp2, des2 = match_features(harris[0], harris[1]) #good matches of two images, plus kp and des of both
+    #finds the matched points using SIFT (though ORB or FAST may be faster), takes 120 seconds to match two imgs
+    #its good up to this point
+    
+    src_pts = np.float32([ kp1[m.queryIdx].pt for m in good ]).reshape(-1,1,2) #source points
+    dst_pts = np.float32([ kp2[m.trainIdx].pt for m in good ]).reshape(-1,1,2) #destination points (i guess where you're mapping to)
+
+    
+    H, mask = cv2.findHomography(src_pts, dst_pts, cv2.RANSAC,5.0)
+    
+    result = cv2.warpPerspective(undist[0], H, (undist[1].shape[1], undist[1].shape[0])) 
+    return result
+
+             
+def main(): 
+    mtx, dist = load_calibration("calibration_results.npz")
+    images = []
+    for file in sorted(glob.glob("camera_calibration_photo_mosaic/International Village - 50 Percent Overlap/*.jpg")):
+        #print(file) print file name
+        images.append(cv2.imread(file))
+
+    mosaic_two_imgs = create_mosaic(images, mtx, dist)
+    shape_y = int(mosaic_two_imgs.shape[0] / 4)
+    shape_x = int(mosaic_two_imgs.shape[1] / 4)
+    cv2.imshow("Mosaic", cv2.resize(mosaic_two_imgs, (shape_x, shape_y)))
+    cv2.waitKey(0)
+
+
+if __name__=="__main__": 
+    main() 
